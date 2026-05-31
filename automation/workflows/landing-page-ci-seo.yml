@@ -1,0 +1,74 @@
+name: landing-page-ci-seo
+
+# PR SEO health scan: changed blog posts only.
+# Copy to .github/workflows/ in your product repo alongside landing-page-ci
+# or run as a standalone workflow on blog/content PRs.
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/landing-page-ci-seo.yml
+      - apps/landing-page/**
+      - skills/**
+      - design-systems/**
+      - craft/**
+      - templates/**
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/landing-page-ci-seo.yml
+      - apps/landing-page/**
+      - skills/**
+      - design-systems/**
+      - craft/**
+      - templates/**
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: landing-page-ci-seo-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  blog-seo:
+    name: Blog SEO lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Setup workspace
+        uses: ./.github/actions/setup-workspace
+
+      - name: Build landing page (static)
+        env:
+          PUBLIC_GA_MEASUREMENT_ID: ${{ vars.PUBLIC_GA_MEASUREMENT_ID }}
+        run: pnpm --filter @open-design/landing-page build:static
+
+      - name: Lint changed blog SEO
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
+          if [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE="HEAD^"
+          fi
+          pnpm --filter @open-design/landing-page exec tsx scripts/blog-indexing/lint-blog-seo.ts \
+            --base "$BASE" \
+            --head HEAD \
+            --rendered-out apps/landing-page/out
+
+      - name: Guard blog URL changes
+        run: |
+          BASE="${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}"
+          if [ "$BASE" = "0000000000000000000000000000000000000000" ]; then
+            BASE="HEAD^"
+          fi
+          pnpm --filter @open-design/landing-page exec tsx scripts/blog-indexing/check-blog-url-changes.ts \
+            --base "$BASE" \
+            --head HEAD

@@ -22,28 +22,28 @@ Install a skill by copying its folder into your Codex/Cursor skills directory (f
 3. **Content** — `open-design-blog-factory` or `blog-factory` to produce posts
 4. **Indexing** — `blog-indexing-automation` plus the Open Design GitHub Actions below
 
-## Open Design automation (already in the product repo)
+## Automation bundle (`automation/`)
 
-These workflows are implemented in [nexu-io/open-design](https://github.com/nexu-io/open-design), not duplicated here:
+Copy-ready scripts, GitHub Actions workflows, and operator docs from [nexu-io/open-design](https://github.com/nexu-io/open-design). See [automation/README.md](automation/README.md) for adoption steps, secrets, and `lib.ts` site configuration.
 
-| Workflow | File | Schedule |
+| Workflow | Bundle path | Schedule |
 | --- | --- | --- |
-| Blog SEO lint | `.github/workflows/landing-page-ci.yml` | On PR |
-| Post-deploy indexing | `.github/workflows/blog-indexing-on-deploy.yml` | After `landing-page-deploy` |
-| Indexing monitor | `.github/workflows/blog-indexing-monitor.yml` | Daily 02:00 UTC |
-| Traffic digest | `.github/workflows/blog-3day-report.yml` | Daily 02:00 UTC |
-| SEO daily report | `.github/workflows/seo-daily-report.yml` | Daily 01:00 UTC |
+| Blog SEO lint | `automation/workflows/landing-page-ci-seo.yml` | On PR |
+| Post-deploy indexing | `automation/workflows/blog-indexing-on-deploy.yml` | After deploy |
+| Indexing monitor | `automation/workflows/blog-indexing-monitor.yml` | Daily 02:00 UTC |
+| Traffic digest | `automation/workflows/blog-3day-report.yml` | Daily 02:00 UTC |
+| SEO daily report | `automation/workflows/seo-daily-report.yml` | Daily 01:00 UTC |
 
 Docs:
 
-- [docs/blog-indexing-automation.md](https://github.com/nexu-io/open-design/blob/main/docs/blog-indexing-automation.md)
-- [docs/seo-daily-report.md](https://github.com/nexu-io/open-design/blob/main/docs/seo-daily-report.md)
-- [docs/blog-indexing-status.md](https://github.com/nexu-io/open-design/blob/main/docs/blog-indexing-status.md)
+- [automation/docs/blog-indexing-automation.md](automation/docs/blog-indexing-automation.md)
+- [automation/docs/seo-daily-report.md](automation/docs/seo-daily-report.md)
+- [automation/docs/examples/blog-indexing-status.md](automation/docs/examples/blog-indexing-status.md)
 
 Scripts:
 
-- `apps/landing-page/scripts/blog-indexing/lint-blog-seo.ts`
-- `apps/landing-page/scripts/seo-daily-report.ts`
+- `automation/scripts/blog-indexing/` (17 TypeScript modules)
+- `automation/scripts/seo-daily-report.ts`
 
 ## Install example
 
