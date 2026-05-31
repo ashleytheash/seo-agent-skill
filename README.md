@@ -1,4 +1,4 @@
-# Codex SEO & Blog Agent Skills
+# SEO Agent Skill
 
 Agent skills for SEO diagnosis, competitive analysis, blog production, and post-publish indexing automation.
 
@@ -48,9 +48,9 @@ Scripts:
 ## Install example
 
 ```bash
-git clone https://github.com/ashleytheash/codex-skills.git
-cp -R codex-skills/seo-optimization ~/.codex/skills/
-cp -R codex-skills/gsc-seo-prioritizer ~/.codex/skills/
+git clone https://github.com/ashleytheash/seo-agent-skill.git
+cp -R seo-agent-skill/seo-optimization ~/.codex/skills/
+cp -R seo-agent-skill/gsc-seo-prioritizer ~/.codex/skills/
 ```
 
 ## License
